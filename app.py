@@ -23,13 +23,14 @@ st.header("Stock Time Series Forecaster")
 col1, col2 = st.columns([1,1])
 
 with col1:
-    starting_date = st.date_input("Starting Date")
-    ending_date = st.date_input("Ending Date")
-    company = st.text_input('Company Ticker Symbol', placeholder='AAPL')
+    starting_date = st.date_input("Starting Date", value=dt.datetime(2023, 6, 1))
+    ending_date = st.date_input("Ending Date", value=dt.datetime(2023, 6, 25))
+    company = st.text_input('Company Ticker Symbol', value='AAPL')
     model = st.selectbox('Choose a model', ('ARIMA', 'GARCH'))
 
 stock = yf.Ticker(company)
 stock_data = stock.history(start=starting_date, end=ending_date)
+line_plot = sns.lineplot(data=stock_data, x='Date', y='Close' )
 
 with col2:
-    st.dataframe(stock_data)
+    st.pyplot(line_plot.get_figure())
